@@ -44,44 +44,33 @@ contract('HashLogger', function(accounts) {
       assert(err);
     });
   });
-  it("should allow registered addreses to trigger AddHash event", function() {
+  it("should allow registered addreses set true and trigger UpdatedHash event", function() {
     let registry;
     let event;
     return HashLogger.deployed().then(function(instance) {
       registry = instance;
-      event = instance.AddHash((err, result) => assert.equal(result.args._hash, exampleHash));
-      return registry.addHash(exampleHash, { from: accounts[1] });
+      event = instance.UpdateHash((err, result) => assert.equal(result.args._hash, exampleHash));
+      return registry.setHash(exampleHash, true, { from: accounts[1] });
     }).then(() => {
       event.stopWatching();
     });
   });
-  it("should allow registered addreses to trigger RemoveHash event", function() {
+  it("should allow registered addreses to set false and trigger UpdatedHash event", function() {
     let registry;
     let event;
     return HashLogger.deployed().then(function(instance) {
       registry = instance;
-      event = instance.RemoveHash((err, result) => assert.equal(result.args._hash, exampleHash));
-      return registry.removeHash(exampleHash, { from: accounts[1] });
+      event = instance.UpdateHash((err, result) => assert.equal(result.args._hash, exampleHash));
+      return registry.setHash(exampleHash, false, { from: accounts[1] });
     }).then(() => {
       event.stopWatching();
     });
   });
-  it("should throw when non-user tries to addHash", function() {
+  it("should throw when non-user tries to update hash", function() {
     let registry;
     return HashLogger.deployed().then(function(instance) {
       registry = instance;
-      return registry.addHash(exampleHash, { from: accounts[2] })
-    }).then((res) => {
-      assert.ifError(res);
-    }).catch((err) => {
-      assert(err);
-    });
-  });
-  it("should throw when non-user tries to removeHash", function() {
-    let registry;
-    return HashLogger.deployed().then(function(instance) {
-      registry = instance;
-      return registry.removeHash(exampleHash, { from: accounts[2] })
+      return registry.setHash(exampleHash, true, { from: accounts[2] })
     }).then((res) => {
       assert.ifError(res);
     }).catch((err) => {

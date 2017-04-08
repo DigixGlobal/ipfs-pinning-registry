@@ -7,8 +7,7 @@ contract HashLogger {
 	address public owner = msg.sender;
 	mapping (address => bool) users;
 
-	event AddHash(bytes32 _hash);
-	event RemoveHash(bytes32 _hash);
+	event UpdateHash(bytes32 _hash, bool _added);
 
 	modifier onlyOwner {
 		if (msg.sender != owner) throw;
@@ -16,7 +15,7 @@ contract HashLogger {
 	}
 
 	modifier onlyUser {
-		if (!users[msg.sender]) throw;
+		if (users[msg.sender] != true) throw;
 		_;
 	}
 
@@ -28,14 +27,9 @@ contract HashLogger {
 		return users[addr];
 	}
 
-	function addHash(bytes32 _hash) onlyUser {
-		AddHash(_hash);
+	function setHash(bytes32 _hash, bool _added) onlyUser {
+		UpdateHash(_hash, _added);
 	}
-
-	function removeHash(bytes32 _hash) onlyUser {
-		RemoveHash(_hash);
-	}
-
 
 	function kill() onlyOwner {
 		suicide(owner);
