@@ -1,0 +1,15 @@
+{
+  "name": "@digix/ipfs-pinning-registry",
+  "version": "0.0.1",
+  "description": "IPFS Pinning Regsitry Contracts",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js",
+    "test": "truffle test"
+  },
+  "author": "Chris Hitchcott <hitchcott@gmail.com> (http://hitchcott.com)",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@digix/truffle-lightwallet-provider": "0.0.11"
+  }
+}
